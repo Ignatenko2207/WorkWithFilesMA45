@@ -1,5 +1,7 @@
 package com.mainacad;
 
+import com.mainacad.servive.FileService;
+
 import java.util.logging.Logger;
 
 public class ApplicationRunner {
@@ -9,5 +11,6 @@ public class ApplicationRunner {
 
     public static void main(String[] args) {
 
+        FileService.copyFile("cat.jpg", "cat_copy.jpg");
     }
 }

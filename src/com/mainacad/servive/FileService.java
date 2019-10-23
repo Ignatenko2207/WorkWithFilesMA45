@@ -1,6 +1,7 @@
 package com.mainacad.servive;
 
 import java.io.*;
+import java.nio.file.Files;
 
 public class FileService {
 
@@ -9,7 +10,7 @@ public class FileService {
     public static final String FILES_DIR = MAIN_DIR + SEP + "files";
 
     // work with text
-    public static void writeTextToFile(String text, String fileName){
+    public static void writeTextToFile(String text, String fileName, boolean append){
         checkTargetDir();
 
         try (FileWriter fileWriter = new FileWriter(FILES_DIR + SEP + fileName)) {
@@ -43,6 +44,32 @@ public class FileService {
         }
 
         return out;
+    }
+
+    public static void writeBytesToFile(byte[] bytes, String fileName) {
+        checkTargetDir();
+        try (FileOutputStream fileOutputStream =
+                     new FileOutputStream(FILES_DIR + SEP + fileName)) {
+            fileOutputStream.write(bytes);
+            fileOutputStream.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static byte[] getBytesFromFile(String fileName){
+        File file = new File(FILES_DIR + SEP + fileName);
+        try {
+            return Files.readAllBytes(file.toPath());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return new byte[0];
+    }
+
+    public static void copyFile(String sourceName, String targetName) {
+        byte[] bytes = getBytesFromFile(sourceName);
+        writeBytesToFile(bytes, targetName);
     }
 
 }
